@@ -28,7 +28,13 @@ df_messages = df['Message']
 ### A list of swearing words
 #TODO: Do we use predefined profane words to start labeling some sentences in advance?
 # Or just keep it in the training and testing stage instead?
-#dirtyWords = pd.read_csv('profanity_en.csv', on_bad_lines='skip')['text']
+dirtyWordFile = pd.read_csv('profanity_en.csv', on_bad_lines='skip')
+workaroundDirtyWords = dirtyWordFile['text'].values.tolist()
+canonicalDirtyWords = dirtyWordFile['canonical_form_1'].values.tolist()
+# a dictionary that maps workaround dirty words to canonical forms, later substitute these words
+dirtyDict = {}
+dirtyDict = {workaroundDirtyWords[i]: canonicalDirtyWords[i] for i in range(len(workaroundDirtyWords))}
+# TODO: handle dirty words with spaces? like "s h i t"
 
 # average length of reviews before cleaning
 means = [df_messages.apply(len).mean()]
@@ -48,10 +54,16 @@ def MyClean(myDf):
         s = s.encode("ascii", "ignore").decode()
         # remove numeric characters
         s = re.sub('[0-9]', '', s)
-        # remove emoji words in format of ":smiling_face_with_smiling_eyes:"
         slist = s.split()
         newstr = ""
         for i in slist:
+            # order of if matters
+            # substitute workaround profane words with canonical forms
+            if i in dirtyDict:
+                #print("before " + i)
+                i = dirtyDict[i]
+                #print("after " + i)
+            # remove emoji words in format of ":smiling_face_with_smiling_eyes:"
             if i[0] != ':':
                 newstr += i
                 newstr += " "
@@ -110,4 +122,4 @@ msgLengthAfterPreproc = float(sum(tmp)) / len(tmp)
 # TODO: word size reduced by ~40% after lemmatization, may be too much?
 print("Message Length After Lemmatization: " + str(msgLengthAfterCleaning) + "," + str(msgLengthAfterPreproc))
 
-print(cleanedMessages)
+#print(cleanedMessages)
