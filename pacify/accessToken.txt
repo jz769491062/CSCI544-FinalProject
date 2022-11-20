@@ -1,9 +1,0 @@
-2022/11/20 12:12:23 User Access Token: 3vc0guoktcs2jdwixghgjjwlzbrmm0
-Refresh Token: ymyrpyzx6lrqj06ks8lus8528s8f1sklemsiokx8fj9tvwpeg1
-Expires At: 2022-11-20 23:58:11.887764 +0000 UTC
-Scopes: [channel:moderate chat:edit chat:read user:read:email]
-
-
-client: bgofev7sjq3ykpqi280k5mxibej9q9
-secret: 6dkrxlj9vwk7xa9qrvadcxr6xyt7f6
-
