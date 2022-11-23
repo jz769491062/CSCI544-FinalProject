@@ -28,7 +28,7 @@ df_messages = df['Message']
 ### A list of swearing words
 #TODO: Do we use predefined profane words to start labeling some sentences in advance?
 # Or just keep it in the training and testing stage instead?
-dirtyWordFile = pd.read_csv('profanity_en.csv', on_bad_lines='skip')
+dirtyWordFile = pd.read_csv('profanity_words.csv', on_bad_lines='skip')
 workaroundDirtyWords = dirtyWordFile['text'].values.tolist()
 canonicalDirtyWords = dirtyWordFile['canonical_form_1'].values.tolist()
 # a dictionary that maps workaround dirty words to canonical forms, later substitute these words
@@ -54,6 +54,9 @@ def MyClean(myDf):
         s = s.encode("ascii", "ignore").decode()
         # remove numeric characters
         s = re.sub('[0-9]', '', s)
+        # remove punctuations
+        # not eliminating @, # and * because they're common workarounds for dirty words
+        s = re.sub('[,./?!~`$%^&()-_+=:;\'\"]', '', s)
         slist = s.split()
         newstr = ""
         for i in slist:
@@ -122,4 +125,18 @@ msgLengthAfterPreproc = float(sum(tmp)) / len(tmp)
 # TODO: word size reduced by ~40% after lemmatization, may be too much?
 print("Message Length After Lemmatization: " + str(msgLengthAfterCleaning) + "," + str(msgLengthAfterPreproc))
 
-#print(cleanedMessages)
+# print(cleanedMessages)
+
+outFile = open("preprocoutput.txt", "w", encoding='UTF-8')
+outFile.write("")
+outFile.close()
+outFile = open("preprocoutput.txt", "a", encoding='UTF-8')
+for line in cleanedMessages:
+    tempstr = ""
+    for wordIdx in range(len(line)):
+        tempstr += line[wordIdx]
+        if wordIdx != (len(line) - 1):
+            tempstr += " "
+    tempstr += "\n"
+    outFile.write(tempstr)
+outFile.close()
