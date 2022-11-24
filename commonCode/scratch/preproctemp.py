@@ -1,4 +1,6 @@
 import sys
+import os
+import glob
 import pandas as pd
 import numpy as np
 get_ipython().system('{sys.executable} -m pip install contractions')
@@ -45,18 +47,22 @@ msgLengthBeforeCleaning = sum(means) / len(means)
 
 def MyClean(myDf):
     # to lower cases, keep alphabets only, remove extra whitespaces
-    myDf = myDf.replace('[^a-zA-Z]', '')
-    myDf = myDf.replace(' +', ' ')
+    # is replace working???
+    # myDf = myDf.replace('[^a-zA-Z]', '')
+    # myDf = myDf.replace(' +', ' ')
     myProcStr = myDf.str.lower()
     ret = []
     for s in myProcStr:
         # remove unicode characters
         s = s.encode("ascii", "ignore").decode()
-        # remove numeric characters
-        s = re.sub('[0-9]', '', s)
+        # remove numeric characters. May hurt profanity detection so not removing for now
+        # s = re.sub('[0-9]', '', s)
         # remove punctuations
-        # not eliminating @, # and * because they're common workarounds for dirty words
-        s = re.sub('[,./?!~`$%^&()-_+=:;\'\"]', '', s)
+        # not eliminating @, #, and * because they're common workarounds for dirty words
+        # not removing : for it's a emoji pattern we are about to handle in the loop
+        # not removing _ for it relates to emoji patterns
+        s = re.sub('[,.?!/~`$%^&()<>-+=;\'\"]', '', s)
+        # s = re.sub('[,.?!~`$%^&()-1+=;]', '', s)
         slist = s.split()
         newstr = ""
         for i in slist:
@@ -138,5 +144,7 @@ for line in cleanedMessages:
         if wordIdx != (len(line) - 1):
             tempstr += " "
     tempstr += "\n"
+    if tempstr != "\n":
+        outFile.write(tempstr)
     outFile.write(tempstr)
 outFile.close()
