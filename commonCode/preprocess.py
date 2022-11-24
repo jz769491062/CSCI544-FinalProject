@@ -116,6 +116,11 @@ def PreProcessOneFile(fileStr, columnStr):
             outFile.write(tempstr)
     outFile.close()
 
+# PreProcessOneFile('./scratch/kaggle_data.csv', 'message')
+#     For now it outputs to 'preprocoutput.txt' in the same directory. No return values. Input is file name with directory, and the column name that corresponds to the chat messages in csv file.
+# PreProcessOneMessage('thank you bro :smiling_face_with_smiling_eyes: :smiling_face_with_smiling_eyes: ')
+#     Returns preprocessed string. In training and testing you can import PreProcessOneMessage and call it.
+
 # TODO: change file name and column name here as needed
 PreProcessOneFile('./scratch/kaggle_data.csv', 'message')
 
