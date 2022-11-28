@@ -3,17 +3,18 @@ import pandas as pd
 from sklearn.metrics import precision_recall_fscore_support
 import sklearn.metrics as metrics
 from sklearn.metrics import precision_recall_curve
+from sklearn.metrics import accuracy_score
 
-df = pd.read_csv("mock_prediction.csv")
-pre_list = list(df['pre'])
-y_list = list(df['y'])
+df = pd.read_csv("eval_BOW.csv")
+pre_list = list(df['y_test'])
+y_list = list(df['y_pred'])
 
 def precision_recall_score(pre_list, y_list):
     lr_precision, lr_recall, _ = precision_recall_curve(pre_list, y_list)
     plt.plot(lr_recall, lr_precision, marker='.', label='Logistic')
     plt.xlabel('Recall')
     plt.ylabel('Precision')
-    plt.show()
+    # plt.show()
     return precision_recall_fscore_support(pre_list, y_list)[0], precision_recall_fscore_support(pre_list, y_list)[1]    
 
 def f_score(pre_list, y_list):
@@ -31,9 +32,23 @@ def auc_score(pre_list, y_list):
     plt.ylim([0, 1])
     plt.ylabel('True Positive Rate')
     plt.xlabel('False Positive Rate')
-    plt.show()
+    # plt.show()
     return roc_auc
 
-print(precision_recall_score(pre_list, y_list))
-print(f_score(pre_list, y_list))
+print("BOW eval:")
+print(precision_recall_score(pre_list, y_list)[0].mean())
+print(precision_recall_score(pre_list, y_list)[1].mean())
+print(f_score(pre_list, y_list).mean())
+print(accuracy_score(pre_list, y_list))
+print(auc_score(pre_list, y_list))
+
+df = pd.read_csv("eval_TFIDF.csv")
+pre_list = list(df['y_test'])
+y_list = list(df['y_pred'])
+
+print("TFIDF eval:")
+print(precision_recall_score(pre_list, y_list)[0].mean())
+print(precision_recall_score(pre_list, y_list)[1].mean())
+print(f_score(pre_list, y_list).mean())
+print(accuracy_score(pre_list, y_list))
 print(auc_score(pre_list, y_list))
