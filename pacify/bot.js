@@ -41,9 +41,13 @@ async function onMessageHandler(target, context, msg, self) {
       console.log(`* User said: ${commandName}`);
       console.log(`${context.id}`);
 
-      if(await eval.getEvaluation(commandName) == 'fail'){
+     resp = await eval.getEvaluation(commandName)
+     if(resp=='del'){
         client.deletemessage(opts.channels[0], context.id);
-      } 
+      }
+      if(resp=='warn'){
+        client.say(target, `Please keep the chat civil`);
+      }
   }
 }
 
