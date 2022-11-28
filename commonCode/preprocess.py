@@ -44,10 +44,9 @@ def MyClean(myDf):
         # remove numeric characters. May hurt profanity detection so not removing for now
         s = re.sub('[0-9]', '', s)
         # remove punctuations
-        # not eliminating @, #, and * because they're common workarounds for dirty words
         # not removing : for it's a emoji pattern we are about to handle in the loop
         # not removing _ for it relates to emoji patterns
-        s = re.sub('[,.?!/~`$%^&()-+=;\'\"]', '', s)
+        s = re.sub('[@#*,.?!/~`$%^&()-+=;\'\"]', '', s)
         slist = s.split()
         newstr = ""
         for i in slist:
