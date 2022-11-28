@@ -1,11 +1,8 @@
-def evaluate(msg):
-    evaluation = "pass"
-    confidence = 1
-    return evaluation
-
 def mockEval(msg):
     if msg == 'beep':
-        return "fail"
-    return "pass"
+        return 1
+    if msg == 'bweep':
+        return 0.8
+    return 0
 def checkMessage(msg):
     return mockEval(msg)

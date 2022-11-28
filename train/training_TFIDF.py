@@ -87,9 +87,6 @@ model_LR.fit(vectorizer.transform(X_train), y_train)
 
 y_pred = model_LR.predict(vectorizer.transform(X_test))
 
-# Simple evaluation
-count = 0
-for index, i in enumerate(y_test):
-    if i != y_pred[index]:
-        count = count + 1
-print(count / len(y_pred))
+# Write into test
+df = pd.DataFrame(list(zip(y_test, y_pred)), columns=['y_test', 'y_pred'])
+df.to_csv("../test/eval_TFIDF.csv", index=False)
