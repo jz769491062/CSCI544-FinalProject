@@ -6,8 +6,8 @@ from sklearn.metrics import precision_recall_curve
 from sklearn.metrics import accuracy_score
 
 df = pd.read_csv("eval_BOW.csv")
-pre_list = list(df['y_test'])
-y_list = list(df['y_pred'])
+pre_list = list(df['y_pred'])
+y_list = list(df['y_test'])
 
 def precision_recall_score(pre_list, y_list):
     lr_precision, lr_recall, _ = precision_recall_curve(pre_list, y_list)
@@ -43,8 +43,8 @@ print(accuracy_score(pre_list, y_list))
 print(auc_score(pre_list, y_list))
 
 df = pd.read_csv("eval_TFIDF.csv")
-pre_list = list(df['y_test'])
-y_list = list(df['y_pred'])
+pre_list = list(df['y_pred'])
+y_list = list(df['y_test'])
 
 print("TFIDF eval:")
 print(precision_recall_score(pre_list, y_list)[0].mean())
