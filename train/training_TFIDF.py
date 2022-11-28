@@ -62,8 +62,6 @@ def PreProcessOneMessage(s):
 
 # Preprocess training data
 for index, row in df.iterrows():
-    if index % 10000 == 0:
-        print("Preprocession process: {}".format(index))
     df.loc[index, 'Message'] = PreProcessOneMessage(row['Message'])
 
 # Set Threshold 0.6
