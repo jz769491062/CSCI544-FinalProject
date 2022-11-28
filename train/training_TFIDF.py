@@ -60,16 +60,19 @@ def PreProcessOneMessage(s):
     resultMessage = lemmatizer.lemmatize(tempStr)
     return resultMessage
 
+
 # Preprocess training data
 for index, row in df.iterrows():
+    if index % 10000 == 0:
+        print("Preprocessing: {} / {}".format(index, len(df.index)))
     df.loc[index, 'Message'] = PreProcessOneMessage(row['Message'])
 
 # Set Threshold 0.6
 for index, row in df.iterrows():
     if row['Sentiment'] > 0.6:
-        df.loc[index, 'Sentiment'] = 1
+        df.loc[index, 'label'] = 1
     else:
-        df.loc[index, 'Sentiment'] = 0
+        df.loc[index, 'label'] = 0
 
 # TF_IDF
 from sklearn.feature_extraction.text import TfidfVectorizer
@@ -78,7 +81,7 @@ vectorizer.fit(df['Message'])
 
 # Split training dataset
 from sklearn.model_selection import train_test_split 
-X_train, X_test, y_train, y_test = train_test_split(df['Message'], df['Sentiment'], test_size=0.2)
+X_train, X_test, y_train, y_test = train_test_split(df['Message'], df['label'], test_size=0.2)
 
 # Logistic regression model fit and prediction
 from sklearn.linear_model import LogisticRegression
@@ -86,7 +89,10 @@ model_LR = LogisticRegression()
 model_LR.fit(vectorizer.transform(X_train), y_train)
 
 y_pred = model_LR.predict(vectorizer.transform(X_test))
+y_sentiment = []
+for i in y_test.index:
+    y_sentiment.append(df.loc[i, 'Sentiment'])
 
 # Write into test
-df = pd.DataFrame(list(zip(y_test, y_pred)), columns=['y_test', 'y_pred'])
-df.to_csv("../test/eval_TFIDF.csv", index=False)
+df_eval = pd.DataFrame(list(zip(y_test, y_pred, y_sentiment)), columns=['y_test', 'y_pred', 'original_sentiment'])
+df_eval.to_csv("../test/eval_TFIDF.csv", index=False)
