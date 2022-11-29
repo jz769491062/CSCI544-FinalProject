@@ -71,6 +71,7 @@ def predict(sentence):
 
     features = []
     feature = np.array(np.zeros(len(uniqueWords)))
+    sentence = PreProcessOneMessage(sentence)
     for w in sentence.split(" "):
         if w in uniqueWords:
             feature[uniqueWords[w]] += 1
