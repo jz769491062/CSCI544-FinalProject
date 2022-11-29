@@ -125,6 +125,10 @@ PreProcessOneFile('./scratch/kaggle_data.csv', 'message')
 
 # function for training/testing code to call
 def PreProcessOneMessage(s):
+    # to lower cases
+    s = re.sub('[A-Z]', '[a-z]', s)
+    # remove numerical characters
+    s = re.sub('[0-9]', '', s)
     # remove unicode characters
     s = s.encode("ascii", "ignore").decode()
     # remove punctuations
