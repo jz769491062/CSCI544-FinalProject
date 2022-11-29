@@ -62,6 +62,7 @@ async function onMessageHandler(target, context, msg, self) {
       }
       if(offences[context['user-id']]>min_offences){
         client.say(target,  `@${context.username}, You have been timed out for 30s`);
+        offences[context['user-id']]=0
         client.timeout(target,context.username,30,"Repeated Offence")
       }
   }

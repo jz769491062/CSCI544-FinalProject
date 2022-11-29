@@ -1,4 +1,4 @@
-from model import checkMessage
+from model import checkMessage, predict
 from flask import Flask, request
 from constants import ACTIONS
 
@@ -10,7 +10,8 @@ def health():
 
 @app.route("/check",methods=['GET'])
 def check():
-    pred = checkMessage(request.args['msg'])
+    pred = predict(request.args['msg'])
+    print(pred)
     if pred >= ACTIONS['del'] :
         return "del"
     elif pred >= ACTIONS['warn'] :
